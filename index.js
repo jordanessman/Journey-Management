@@ -53,7 +53,6 @@ app.get('/JM', (rec, res) =>{
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     res.render('NexTier JM Bootstrap.html')
-    res.sendFile('/button.js')
 })
 
 app.get('/COMPLETE', (rec, res) =>{
