@@ -34,7 +34,9 @@ app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended : true}))
 app.use(express.json());
 app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'))
+
 
  app.get('/DATA', async (rec, res) => {
      const trips = await Journey.find();
@@ -46,8 +48,12 @@ app.get('/LOGS', async (rec, res) => {
     res.render('log.ejs', {trips})
 })
 
+
 app.get('/JM', (rec, res) =>{
-    res.render('NexTier JM Bootstrap.ejs')
+    app.engine('html', require('ejs').renderFile);
+    app.set('view engine', 'html');
+    res.render('NexTier JM Bootstrap.html')
+    res.sendFile('/button.js')
 })
 
 app.get('/COMPLETE', (rec, res) =>{

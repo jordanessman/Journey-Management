@@ -70,4 +70,6 @@ label{
     display: flex;
     flex-direction: row;
     }
-
+#div1 {
+    float: left;
+}
