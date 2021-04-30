@@ -60,7 +60,7 @@
             <% for(i=0; i< trips.length; i++) { %> 
                 <% if (trips[i].status === false) {     %>
                   <% let dateString = trips[i].submissionDate; let temp1 = new Date(dateString) %>
-                  <% temp = `${temp1.getMonth()}${parseInt(temp1.getDate() - 1)}${temp1.getYear()}`;%>
+                  <% temp = `${temp1.getMonth()}${parseInt(temp1.getDate())}${temp1.getYear()}`;%>
                   <% console.log(temp); console.log(date); %>
                   <% if (temp == date){  %>
                 
