@@ -55,14 +55,14 @@
                 <div class="header__item"><a id="total" class="filter__link filter__link--number" href="#">Estimated Arival</a></div>
                 <div class="header__item"><a id="total" class="filter__link filter__link--number" href="#">Completion Time</a></div>
             </div>
-            <% console.log(trips) %>
-            <% let date = new Date(); date1= `${date.getMonth()}${date.getDate()}${date.getYear()}`; console.log( date1);%>
+            <% let date1 = hold.qdate; date1 = new Date(date1);  %>
+            <% date= `${date1.getMonth()}${parseInt(date1.getDate())}${date1.getYear()}`; console.log(date);%>
             <% for(i=0; i< trips.length; i++) { %> 
                 <% if (trips[i].status === false) {     %>
-                  <% let dateString = trips[i].submissionDate; let temp1 = new Date(dateString);%>
-                  <% temp = `${temp1.getMonth()}${temp1.getDate()}${temp1.getYear()}`;%>
-                  <% console.log(temp); %>
-                  <% if (temp === date1){  %>
+                  <% let dateString = trips[i].submissionDate; let temp1 = new Date(dateString) %>
+                  <% temp = `${temp1.getMonth()}${parseInt(temp1.getDate() - 1)}${temp1.getYear()}`;%>
+                  <% console.log(temp); console.log(date); %>
+                  <% if (temp == date){  %>
                 
             <div class="table-content">	
                 <div class="table-row">		

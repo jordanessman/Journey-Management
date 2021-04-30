@@ -48,12 +48,18 @@ app.get('/LOGS', async (rec, res) => {
     res.render('log.ejs', {trips})
 })
 
+app.post('/LOGS', async (req, res) => {
+    const trips = await Journey.find();
+    hold = req.body;
+    res.render('logWDate.ejs', {trips, hold})
+})
 
 app.get('/JM', (rec, res) =>{
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     res.render('NexTier JM Bootstrap.html')
 })
+
 
 app.get('/COMPLETE', (rec, res) =>{
     res.render('completion.ejs')
@@ -107,7 +113,7 @@ async function saveData(hold){
     trip.journeyStart = hold.TS;
     trip.driveTime = hold.TD;
     trip.expectedArival = hold.TE;
-    trip.submissionDate = Date();
+    trip.submissionDate = `${new Date()}`;
     trip.status = true;
     console.log(trip)
     const n = new Journey(trip);
@@ -122,7 +128,7 @@ async function complete(tA, hold){
                        const {id} = {id : tA[i]._id} 
                         tA[i].completionTime = hold.time;
                         tA[i].status = false;
-                        tA[i].completionSubTime = Date();
+                        tA[i].completionSubTime = `${new Date()}`;
                         console.log(id)
                         const n = await Journey.findByIdAndUpdate({_id: tA[i]._id}, tA[i], {new : true},function(err, updatedProfile){
                             if(err) { console.log(err)}});
