@@ -4,9 +4,11 @@ const path = require('path');
 var bodyParser = require('body-parser');
 const fs = require("fs");
 const { stringify } = require('qs');
-const Journey = require('./models/journey.js');
+const Journey = require('./models/chassis.js');
 const methodOverride = require('method-override')
+const bcrypt = require('bcrypt');
 //const mongoDBStore = require('connect-mongo')(session);
+const user = require('./models/user.js');
 
 
 
@@ -38,6 +40,41 @@ app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'))
 
 
+
+app.get('/Chassis', (rec, res) =>{
+    app.engine('html', require('ejs').renderFile);
+    app.set('view engine', 'html');
+    res.render('NexTier JM Bootstrap.html')
+})
+
+app.post('/Chassis', async (req, res) =>{
+    let hold = req.body
+    const trips = await Journey.find();
+    addPoints(hold);
+    saveData(hold, trips);
+     res.send('Received, please submit your trip completion through www.NexTierOFS.com/COMPLETE')
+ })
+ app.get('/Return', (rec, res) =>{
+    res.render('completion.ejs')
+})
+
+app.post('/Return', async (req, res) =>{
+    let tA = await Journey.find();
+    let hold = req.body;
+    complete(tA, hold)
+    res.send('Your trip has been closed out!')
+})
+
+app.get('/LOGIN', (req, res) => {
+    res.render('login.ejs')
+})
+
+app.post('/LOGIN', (req, res) =>{
+    const {uName, pWord} = req.body
+    console.log(uName);
+    console.log(pWord);
+})
+
  app.get('/DATA', async (rec, res) => {
      const trips = await Journey.find();
     res.render('index.ejs', {trips})
@@ -54,31 +91,6 @@ app.post('/LOGS', async (req, res) => {
     res.render('logWDate.ejs', {trips, hold})
 })
 
-app.get('/JM', (rec, res) =>{
-    app.engine('html', require('ejs').renderFile);
-    app.set('view engine', 'html');
-    res.render('NexTier JM Bootstrap.html')
-})
-
-
-app.get('/COMPLETE', (rec, res) =>{
-    res.render('completion.ejs')
-})
-
-app.post('/COMPLETE', async (req, res) =>{
-    let tA = await Journey.find();
-    let hold = req.body;
-    complete(tA, hold)
-    res.send('Your trip has been closed out!')
-})
-
-app.post('/JM', async (req, res) =>{
-   let hold = req.body
-   const trips = await Journey.find();
-   addPoints(hold);
-   saveData(hold, trips);
-    res.send('Received, please submit your trip completion through www.NexTierOFS.com/COMPLETE')
-})
 
 app.use((req, res)=> {
         res.send('NOT FOUND')
